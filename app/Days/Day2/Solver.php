@@ -12,4 +12,14 @@ class Solver
                 return $line->validate();
             })->count();
     }
+
+    public static function solveTwo(array $input) : int
+    {
+        return collect($input)
+            ->map(function ($item) {
+                return LineParser::parse($item);
+            })->filter(function (Line $line) {
+                return $line->validateTwo();
+            })->count();
+    }
 }

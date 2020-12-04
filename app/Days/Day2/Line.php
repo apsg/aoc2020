@@ -45,4 +45,28 @@ class Line
 
         return $length >= $this->min && $length <= $this->max;
     }
+
+    public function validateTwo() : bool
+    {
+        if (strlen($this->password) < $this->min) {
+            return false;
+        }
+
+        if (strlen($this->password) < $this->max) {
+            return false;
+        }
+
+        $letter1 = $this->password[$this->min - 1];
+        $letter2 = $this->password[$this->max - 1];
+
+        if ($letter1 === $this->letter && $letter2 === $this->letter) {
+            return false;
+        }
+
+        if ($letter1 !== $this->letter && $letter2 !== $this->letter) {
+            return false;
+        }
+
+        return true;
+    }
 }

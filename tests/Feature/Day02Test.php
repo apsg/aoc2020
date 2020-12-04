@@ -1075,4 +1075,30 @@ class Day02Test extends TestCase
         // then
         $this->assertEquals(542, $result);
     }
+
+    /** @test */
+    public function it_solves_part_two_for_short_input()
+    {
+        // given
+        // short input
+
+        // when
+        $result = Solver::solveTwo(static::SHORT_INPUT);
+
+        // then
+        $this->assertEquals(1, $result);
+    }
+
+    /** @test */
+    public function it_solves_part_two_for_long_input()
+    {
+        // given
+        $inputParsed = explode(PHP_EOL, static::LONG_INPUT);
+
+        // when
+        $result = Solver::solveTwo($inputParsed);
+
+        // then
+        $this->assertEquals(360, $result);
+    }
 }
