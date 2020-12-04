@@ -93,6 +93,40 @@ class Day03Test extends TestCase
         $this->assertEquals(156, $result);
     }
 
+    /** @test */
+    public function multitraverse_short_map()
+    {
+        // given
+        $map = new Map(static::SHORT_PATTERN);
+
+        // when
+        $result = $map->solve(static::SLOPES);
+
+        // then
+        $this->assertEquals(336, $result);
+    }
+
+    /** @test */
+    public function multitraverse_long_map()
+    {
+        // given
+        $map = new Map(static::LONG_PATTERN);
+
+        // when
+        $result = $map->solve(static::SLOPES);
+
+        // then
+        $this->assertEquals(3521829480, $result);
+    }
+
+    const SLOPES = [
+        [1, 1],
+        [3, 1],
+        [5, 1],
+        [7, 1],
+        [1, 2],
+    ];
+
     const LONG_PATTERN = ".........#..##..#..#........#..
 #...#..#..#...##.....##.##.#...
 ....#..............#....#....#.

@@ -48,4 +48,16 @@ class Map
 
         return $sum;
     }
+
+    public function traverseMultiple(array $slopes) : array
+    {
+        return array_map(function (array $coords) {
+            return $this->traverse($coords[0], $coords[1]);
+        }, $slopes);
+    }
+
+    public function solve(array $slopes) : int
+    {
+        return array_product($this->traverseMultiple($slopes));
+    }
 }
