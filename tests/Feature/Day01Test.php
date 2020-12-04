@@ -249,12 +249,27 @@ class Day01Test extends TestCase
     /** @test */
     public function it_solves_short_input_for_three()
     {
-        // given
-        
+        // given,
+        $solver = new Solver(static::INPUT_SHORT);
 
         // when
+        $result = $solver->solveForThree();
 
         // then
+        $this->assertEquals(241861950, $result);
+    }
 
+    /** @test */
+    public function it_solves_long_input_for_three()
+    {
+        // given,
+        $solver = new Solver(static::LONG_INPUT);
+
+        // when
+        $result = $solver->solveForThree();
+
+        // then
+        $this->assertTrue(true); // expect no exceptions
+        $this->assertEquals(223162626, $result);
     }
 }

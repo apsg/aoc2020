@@ -25,6 +25,13 @@ class Solver
             ->multiply();
     }
 
+    public function solveForThree()
+    {
+        return $this
+            ->findThree()
+            ->multiply();
+    }
+
     private function findTwo() : self
     {
         foreach ($this->input as $id => $value) {
@@ -39,6 +46,24 @@ class Solver
 
         throw new \Exception('valid solution not found');
     }
+
+    private function findThree() : self
+    {
+        foreach ($this->input as $id => $value) {
+            for ($j = $id + 1; $j < count($this->input); $j++) {
+                for ($k = $j + 1; $k < count($this->input); $k++) {
+                    if ($value + $this->input[$j] + $this->input[$k] === 2020) {
+                        $this->found = [$value, $this->input[$j], $this->input[$k]];
+
+                        return $this;
+                    }
+                }
+            }
+        }
+
+        throw new \Exception('valid solution not found');
+    }
+
 
     private function multiply() : int
     {
