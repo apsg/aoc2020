@@ -15,7 +15,7 @@ class Day06Test extends TestCase
         // when
         $count = collect($allGroups)
             ->map(function ($group) {
-                return (new Group($group))->count();
+                return (new Group($group))->merge()->count();
             })->sum();
 
         // then
@@ -31,11 +31,43 @@ class Day06Test extends TestCase
         // when
         $count = collect($allGroups)
             ->map(function ($group) {
-                return (new Group($group))->count();
+                return (new Group($group))->merge()->count();
             })->sum();
 
         // then
         $this->assertEquals(6506, $count);
+    }
+
+    /** @test */
+    public function it_sums_intersection_of_short_input()
+    {
+        // given
+        $allGroups = explode(PHP_EOL . PHP_EOL, static::SHORT_INPUT);
+
+        // when
+        $count = collect($allGroups)
+            ->map(function ($group) {
+                return (new Group($group))->intersect()->count();
+            })->sum();
+
+        // then
+        $this->assertEquals(6, $count);
+    }
+
+    /** @test */
+    public function it_sums_intersection_of_long_input()
+    {
+        // given
+        $allGroups = explode(PHP_EOL . PHP_EOL, static::LONG_INPUT);
+
+        // when
+        $count = collect($allGroups)
+            ->map(function ($group) {
+                return (new Group($group))->intersect()->count();
+            })->sum();
+
+        // then
+        $this->assertEquals(3243, $count);
     }
 
     const SHORT_INPUT = "abc
