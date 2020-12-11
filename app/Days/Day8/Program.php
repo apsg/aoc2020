@@ -1,16 +1,24 @@
 <?php
 namespace App\Days\Day8;
 
+use function Symfony\Component\Translation\t;
+
 class Program
 {
-    /** @var array|string[] */
+    /** @var array */
     protected $instructions;
+
+    /** @var array */
+    protected $originalInstructions;
 
     /** @var int */
     protected $pointer = 0;
 
     /** @var int */
     protected $accumulator = 0;
+
+    /** @var bool */
+    protected $finished = false;
 
     public function __construct(string $instructions)
     {
@@ -25,11 +33,32 @@ class Program
                 'value'       => substr($parts[1], 1),
             ];
         }, $instructions);
+
+        $this->originalInstructions = $this->instructions;
+    }
+
+    public function fixNextAfter(int $index = 0) : int
+    {
+        for ($i = $index + 1; $i < count($this->instructions); $i++) {
+            if ($this->instructions[$i]['instruction'] === 'nop') {
+                $this->instructions[$i]['instruction'] = 'jmp';
+
+                return $i;
+            }
+
+            if ($this->instructions[$i]['instruction'] === 'jmp') {
+                $this->instructions[$i]['instruction'] = 'nop';
+
+                return $i;
+            }
+        }
+
+        return $index + 1;
     }
 
     public function run() : self
     {
-        while (!$this->shouldTerminate()) {
+        while (!$this->errorOccured() && !$this->shouldTerminate()) {
             $this->processNextInstruction();
         }
 
@@ -39,6 +68,24 @@ class Program
     public function getAccumulatorValue() : int
     {
         return $this->accumulator;
+    }
+
+    public function hasFinished() : bool
+    {
+        return $this->finished;
+    }
+
+    public function trySolve() : self
+    {
+        $lastChecked = 0;
+
+        while (!$this->hasFinished()) {
+            $this->reset();
+            $lastChecked = $this->fixNextAfter($lastChecked);
+            $this->run();
+        }
+
+        return $this;
     }
 
     protected function processNextInstruction()
@@ -105,8 +152,28 @@ class Program
         return $input;
     }
 
-    protected function shouldTerminate() : bool
+    protected function errorOccured() : bool
     {
         return !empty($this->instructions[$this->pointer]['executed']);
+    }
+
+    protected function shouldTerminate() : bool
+    {
+        if ($this->pointer === count($this->instructions)) {
+            $this->finished = true;
+
+            return true;
+        };
+
+        return false;
+    }
+
+    protected function reset() : self
+    {
+        $this->instructions = $this->originalInstructions;
+        $this->pointer = 0;
+        $this->accumulator = 0;
+
+        return $this;
     }
 }

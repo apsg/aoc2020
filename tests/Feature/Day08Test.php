@@ -35,6 +35,32 @@ class Day08Test extends TestCase
         $this->assertEquals(1446, $result);
     }
 
+    /** @test */
+    public function it_tries_to_fix_short_program()
+    {
+        // given
+        $program = new Program(static::SHORT);
+
+        // when
+        $program->trySolve();
+
+        // then
+        $this->assertEquals(8, $program->getAccumulatorValue());
+    }
+
+    /** @test */
+    public function it_tries_to_fix_long_program()
+    {
+        // given
+        $program = new Program(static::LONG);
+
+        // when
+        $program->trySolve();
+
+        // then
+        $this->assertEquals(1403, $program->getAccumulatorValue());
+    }
+
     const SHORT = 'nop +0
 acc +1
 jmp +4
