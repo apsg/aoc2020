@@ -16,12 +16,13 @@ class Day07Test extends TestCase
         // when
         $lineCleaned = Parser::removeSurplusStrings($line);
         $parsed = Parser::parseLine($line);
+        $keys = array_keys($parsed[1]);
 
         // then
         $this->assertIsArray($parsed);
         $this->assertEquals('light red', $parsed[0]);
         $this->assertCount(2, $parsed[1]);
-        $this->assertEquals('bright white', $parsed[1][0]);
+        $this->assertEquals('bright white', $keys[0]);
     }
 
     /** @test */
@@ -68,6 +69,49 @@ class Day07Test extends TestCase
         $this->assertEquals(112, $result);
     }
 
+    /** @test */
+    public function count_short_contains()
+    {
+        // given
+        $lines = explode(PHP_EOL, static::RULES_SHORT);
+        $bags = (new BagsCollection())->processManyLines($lines);
+
+        // when
+        $result = $bags->countContains('shiny gold');
+
+        // then
+        $this->assertEquals(32, $result);
+    }
+
+    /** @test */
+    public function count_another_contains()
+    {
+        // given
+        $lines = explode(PHP_EOL, static::ANOTHER_EXAMPLE);
+        $bags = (new BagsCollection())->processManyLines($lines);
+
+        // when
+        $result = $bags->countContains('shiny gold');
+
+        // then
+        $this->assertEquals(126, $result);
+    }
+
+    /** @test */
+    public function count_long_contains()
+    {
+        // given
+        $lines = explode(PHP_EOL, static::RULES_LONG);
+        $bags = (new BagsCollection())->processManyLines($lines);
+
+        // when
+        $result = $bags->countContains('shiny gold');
+
+        dd($result);
+        // then
+        $this->assertEquals(126, $result);
+    }
+
     const RULES_SHORT = "light red bags contain 1 bright white bag, 2 muted yellow bags.
 dark orange bags contain 3 bright white bags, 4 muted yellow bags.
 bright white bags contain 1 shiny gold bag.
@@ -77,6 +121,14 @@ dark olive bags contain 3 faded blue bags, 4 dotted black bags.
 vibrant plum bags contain 5 faded blue bags, 6 dotted black bags.
 faded blue bags contain no other bags.
 dotted black bags contain no other bags.";
+
+    const ANOTHER_EXAMPLE = "shiny gold bags contain 2 dark red bags.
+dark red bags contain 2 dark orange bags.
+dark orange bags contain 2 dark yellow bags.
+dark yellow bags contain 2 dark green bags.
+dark green bags contain 2 dark blue bags.
+dark blue bags contain 2 dark violet bags.
+dark violet bags contain no other bags.";
 
     const RULES_LONG = "dull blue bags contain 2 dotted green bags, 1 dull brown bag, 3 striped tomato bags, 5 muted blue bags.
 dotted cyan bags contain 2 faded lavender bags, 1 drab fuchsia bag, 5 bright blue bags.

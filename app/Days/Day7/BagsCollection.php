@@ -43,11 +43,22 @@ class BagsCollection
         $found = [];
 
         foreach ($this->bags as $bag => $contains) {
-            if (in_array($name, $contains)) {
+            if (in_array($name, array_keys($contains))) {
                 $found = array_merge($found, $this->find($bag), [$bag]);
             }
         }
 
         return array_unique($found);
+    }
+
+    public function countContains(string $name) : int
+    {
+        $count = 0;
+
+        foreach ($this->bags[$name] as $bag => $subCount) {
+            $count += ($subCount + $subCount * $this->countContains($bag));
+        }
+
+        return $count;
     }
 }

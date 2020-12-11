@@ -10,7 +10,14 @@ class Parser
         $lineParts = explode('contain', static::removeSurplusStrings($line));
 
         $bagName = trim($lineParts[0]);
-        $contains = array_map('trim', explode(',', $lineParts[1]));
+        $containParts = array_map('trim', explode(',', $lineParts[1]));
+        $contains = [];
+
+        foreach ($containParts as $part) {
+            $number = trim(substr($part, 0, 2));
+            $name = trim(substr($part, 2));
+            $contains[$name] = $number;
+        }
 
         return [
             $bagName,
@@ -21,7 +28,7 @@ class Parser
     public static function removeSurplusStrings(string $line) : string
     {
         return preg_replace([
-            '/[0-9]/',
+//            '/[0-9]/',
             '/bags|bag/',
             '/\\./',
             '/no other/',
