@@ -23,7 +23,7 @@ class Solver
         return $this;
     }
 
-    public function solve() : ?int
+    public function findError() : ?int
     {
         for ($i = $this->window; $i < count($this->numbers); $i++) {
             if (!$this->check($i)) {
@@ -49,5 +49,26 @@ class Solver
         }
 
         return false;
+    }
+
+    public function findContiguous(int $number) : array
+    {
+        for ($i = 0; $i < count($this->numbers) - 1; $i++) {
+            for ($bin = 2; $bin < count($this->numbers) - 1; $bin++) {
+                if (array_sum(array_slice($this->numbers, $i, $bin)) === $number) {
+                    return array_slice($this->numbers, $i, $bin);
+                }
+            }
+        }
+
+        return [];
+    }
+
+    public function countWeakness() : int
+    {
+        $error = $this->findError();
+        $numbers = $this->findContiguous($error);
+
+        return min($numbers) + max($numbers);
     }
 }

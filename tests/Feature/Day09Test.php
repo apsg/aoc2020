@@ -13,7 +13,7 @@ class Day09Test extends TestCase
         $solver = new Solver(explode(PHP_EOL, static::SHORT_INPUT));
 
         // when
-        $result = $solver->setWindow(5)->solve();
+        $result = $solver->setWindow(5)->findError();
 
         // then
         $this->assertEquals(127, $result);
@@ -26,10 +26,50 @@ class Day09Test extends TestCase
         $solver = new Solver(explode(PHP_EOL, static::LONG_INPUT));
 
         // when
-        $result = $solver->solve();
+        $result = $solver->findError();
 
         // then
         $this->assertEquals(27911108, $result);
+    }
+
+    /** @test */
+    public function it_finds_contiguous_for_short_input()
+    {
+        // given
+        $solver = new Solver(explode(PHP_EOL, static::SHORT_INPUT));
+        $error = $solver->setWindow(5)->findError();
+
+        // when
+        $numbers = $solver->findContiguous($error);
+
+        // then
+        $this->assertCount(4, $numbers);
+    }
+
+    /** @test */
+    public function it_finds_weakness_for_short_input()
+    {
+        // given
+        $solver = new Solver(explode(PHP_EOL, static::SHORT_INPUT));
+
+        // when
+        $result = $solver->setWindow(5)->countWeakness();
+
+        // then
+        $this->assertEquals(62, $result);
+    }
+
+    /** @test */
+    public function it_finds_weakness_for_long_input()
+    {
+        // given
+        $solver = new Solver(explode(PHP_EOL, static::LONG_INPUT));
+
+        // when
+        $result = $solver->setWindow(25)->countWeakness();
+
+        // then
+        $this->assertEquals(4023754, $result);
     }
 
     const SHORT_INPUT = '35
