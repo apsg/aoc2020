@@ -3,6 +3,7 @@ namespace Tests\Feature;
 
 use App\Days\Day11\Parser;
 use App\Days\Day11\Solver;
+use App\Days\Day11\SolverSecond;
 use Tests\TestCase;
 
 class Day11Test extends TestCase
@@ -63,6 +64,73 @@ class Day11Test extends TestCase
 
         // then
         $this->assertEquals(2126, $solver->countOccupiedSeats());
+    }
+
+    /** @test */
+    public function it_tests_second_solver_for_neighbour_check()
+    {
+        // given
+        $solver = new SolverSecond(Parser::parse(static::CHECK_ONE));
+
+        // when
+        $count = $solver->countTakenNeighbours(4, 3);
+
+        // then
+        $this->assertEquals(8, $count);
+
+        // given
+        $solver = new SolverSecond(Parser::parse(static::CHECK_TWO));
+
+        // when
+        $count = $solver->countTakenNeighbours(1, 1);
+
+        // then
+        $this->assertEquals(0, $count);
+
+        // given
+        $solver = new SolverSecond(Parser::parse(static::CHECK_THREE));
+
+        // when
+        $count = $solver->countTakenNeighbours(3, 3);
+
+        // then
+        $this->assertEquals(0, $count);
+    }
+
+    /** @test */
+    public function it_solves_part_two_for_short_input()
+    {
+        // given
+        $solver = new SolverSecond(Parser::parse(static::SHORT_INPUT));
+
+        // when
+        $solver = $solver->advanceUntilStable();
+
+        // then
+        $this->assertEquals(26, $solver->countOccupiedSeats());
+        $this->assertEquals('#.L#.L#.L#
+#LLLLLL.LL
+L.L.L..#..
+##L#.#L.L#
+L.L#.LL.L#
+#.LLLL#.LL
+..#.L.....
+LLL###LLL#
+#.LLLLL#.L
+#.L#LL#.L#', (string)$solver);
+    }
+
+    /** @test */
+    public function it_solves_part_two_for_long_input()
+    {
+        // given
+        $solver = new SolverSecond(Parser::parse(self::LONG_INPUT));
+
+        // when
+        $solver = $solver->advanceUntilStable();
+
+        // then
+        $this->assertEquals(1914, $solver->countOccupiedSeats());
     }
 
     const SHORT_INPUT = 'L.LL.LL.LL
@@ -188,4 +256,26 @@ LLLLLLL.LLLLLLLLLLLLLLLLLL.LLLLL.LLLLLL.LLL.L.LLLLLLLL.LLLLLLL.L..LLLLLLLL.LLLL.
 LLLLLLLLLLLLL.L.LLLLLL.LLLLLLLLL.LLLLLL.LLLLL.LLLLLLLL.LLLLLLLLLLLLLLLLLLL.LLLLLL.LLLL.LLLL.
 LLLLLLLLLLLLLLL.LLLL.LLLLLLLLLLLLLLLLLL.LLLLLLLL.LLLLL.LLLLLLLLLLLLL.LLLLL.LLLLLL..LLLLLLLLL
 LLLLLLL.LL.LL.LLLLLLLLL.LLLLLLLLLLLLLLL.L.LLLLLL.LLLLL.LLLLLLLLL.LLLLLLL.L.LLLLLLLLLLLLLLLLL';
+
+    const CHECK_ONE = '.......#.
+...#.....
+.#.......
+.........
+..#L....#
+....#....
+.........
+#........
+...#.....';
+
+    const CHECK_TWO = '.............
+.L.L.#.#.#.#.
+.............';
+
+    const CHECK_THREE = '.##.##.
+#.#.#.#
+##...##
+...L...
+##...##
+#.#.#.#
+.##.##.';
 }

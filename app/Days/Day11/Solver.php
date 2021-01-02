@@ -7,6 +7,8 @@ class Solver
     const EMPTY = 'L';
     const TAKEN = '#';
 
+    const TOLERANCE_THRESHOLD = 4;
+
     /** @var array */
     protected $seats = [];
 
@@ -74,14 +76,14 @@ class Solver
             return static::TAKEN;
         }
 
-        if ($this->countTakenNeighbours($row, $column) >= 4) {
+        if ($this->countTakenNeighbours($row, $column) >= static::TOLERANCE_THRESHOLD) {
             return static::EMPTY;
         }
 
         return $this->seats[$row][$column];
     }
 
-    protected function countTakenNeighbours(int $row, int $col) : int
+    public function countTakenNeighbours(int $row, int $col) : int
     {
         $count = 0;
 
